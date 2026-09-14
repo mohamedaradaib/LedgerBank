@@ -1,5 +1,5 @@
 # Bank
-A Fintech banking application for enterprise software. Simulates real-world banking operations, allowing users to securely manage accounts, execute financial transactions, and view transaction history through an intuitive dashboard. 
+A banking application that simulates real-world banking operations, allowing users to securely manage accounts, execute financial transactions, and view transaction history through an intuitive dashboard.
 
 ## Tech Stack
 - Java - Programming language
