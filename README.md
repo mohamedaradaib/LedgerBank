@@ -39,7 +39,7 @@ The application follows a simple banking workflow: a user creates an account and
 
 2. Create the database:
    ```sql
-   CREATE DATABASE bankdb;
+   CREATE DATABASE database;
    ```
 
 3. Update database credentials in `src/main/resources/application.properties` if needed:
