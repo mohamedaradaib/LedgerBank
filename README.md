@@ -53,10 +53,6 @@ The application follows a simple banking workflow: a user creates an account and
    ```bash
    ./mvnw spring-boot:run
    ```
-   Windows:
-   ```bash
-   mvnw.cmd spring-boot:run
-   ```
 
 5. Open the app in a browser:
    ```text
