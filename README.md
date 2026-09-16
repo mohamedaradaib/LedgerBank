@@ -1,6 +1,6 @@
 # Bank Application
 
-A full-stack banking web application built with Java, Spring Boot, and MySQL to simulate core financial operations such as account management, deposits, withdrawals, transfers, and transaction tracking.
+A bank application built with Java, Spring Boot, and MySQL to simulate core financial operations such as account management, deposits, withdrawals, transfers, and transaction tracking.
 
 ## Features
 - User registration and login
@@ -27,7 +27,7 @@ A full-stack banking web application built with Java, Spring Boot, and MySQL to 
 - Maven
 - MySQL
 
-### Setup
+### Installation
 1. Clone the repository:
    ```bash
    git clone https://github.com/mohamedaradaib/Bank.git
@@ -36,12 +36,12 @@ A full-stack banking web application built with Java, Spring Boot, and MySQL to 
 
 2. Create the database:
    ```sql
-   CREATE DATABASE bankappdb;
+   CREATE DATABASE bankdb;
    ```
 
 3. Update database credentials in `src/main/resources/application.properties` if needed:
    ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/bankappdb
+   spring.datasource.url=jdbc:mysql://localhost:3306/bankdb
    spring.datasource.username=root
    spring.datasource.password=your_password
    ```
@@ -59,7 +59,7 @@ A full-stack banking web application built with Java, Spring Boot, and MySQL to 
    ```text
    http://localhost:8080
    ```
-   
+
 ## Live Demo
 
 ## License
