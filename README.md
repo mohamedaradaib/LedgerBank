@@ -1,40 +1,66 @@
-# Bank
-A Bank application that simulates real-world banking operations, allowing users to securely manage accounts, execute financial transactions, and view transaction history through an intuitive dashboard.
+# Bank Application
+
+A full-stack banking web application built with Java, Spring Boot, and MySQL to simulate core financial operations such as account management, deposits, withdrawals, transfers, and transaction tracking.
+
+## Features
+- User registration and login
+- Secure account access using Spring Security
+- Balance tracking for checking and savings accounts
+- Deposit and withdrawal operations
+- Transfers between account types and between users
+- Transaction history viewing
+- Password reset workflow
 
 ## Tech Stack
-- Java
-- Spring Boot
-- Bootstrap
-- Thyme leaf
+- Java 17
+- Spring Boot 3
+- Spring Security
+- Spring Data JPA
+- Thymeleaf
 - MySQL
+- Maven
+- Bootstrap
+
 ## Getting Started
+### Prerequisites
+- Java 17+
+- Maven
+- MySQL
 
-### Installation
-1. **Clone the repository:**
+### Setup
+1. Clone the repository:
    ```bash
-   git clone [https://github.com](https://github.com/mohamedaradaib/Bank.git)
-   ```
-
-2. **Configure the Database:**
-   ```bash
-   sql
-   CREATE DATABASE database;
-   ```
-
-3. **Go into the Directory:**
-   ```bash
+   git clone https://github.com/mohamedaradaib/Bank.git
    cd Bank
    ```
 
-3. **Build and Package the Application:**
-   ```bash
-   mvnw.cmd clean package
+2. Create the database:
+   ```sql
+   CREATE DATABASE bankappdb;
    ```
 
-4. **Run the Application:**
-  ```bash
+3. Update database credentials in `src/main/resources/application.properties` if needed:
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/bankappdb
+   spring.datasource.username=root
+   spring.datasource.password=your_password
+   ```
+
+4. Run the application:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+   Windows:
+   ```bash
    mvnw.cmd spring-boot:run
    ```
+
+5. Open the app in a browser:
+   ```text
+   http://localhost:8080
+   ```
+   
+## Live Demo
 
 ## License
 Distributed under the MIT License.
