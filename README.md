@@ -56,7 +56,7 @@ The application follows a simple banking workflow: a user creates an account and
    ```
 
 2. Open the application in a browser:
-   ```text
+   ```
    http://localhost:8080
    ```
 
