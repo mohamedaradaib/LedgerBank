@@ -2,12 +2,11 @@
 A Bank application that simulates real-world banking operations, allowing users to securely manage accounts, execute financial transactions, and view transaction history through an intuitive dashboard.
 
 ## Tech Stack
-- Java - Programming language
-- Spring Boot - Java framework
-- Bootstrap - Library
-- Thyme leaf - Java Library
-- MySQL - Database
-
+- Java
+- Spring Boot
+- Bootstrap
+- Thyme leaf
+- MySQL
 ## Getting Started
 
 ### Installation
@@ -38,4 +37,4 @@ A Bank application that simulates real-world banking operations, allowing users 
    ```
 
 ## License
-Distrubuted under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License.
