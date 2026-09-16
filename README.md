@@ -44,7 +44,7 @@ The application follows a simple banking workflow: a user creates an account and
 
 3. Update database credentials in `src/main/resources/application.properties` if needed:
    ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/bankdb
+   spring.datasource.url=jdbc:mysql://localhost:3306/database
    spring.datasource.username=root
    spring.datasource.password=your_password
    ```
