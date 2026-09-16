@@ -49,12 +49,13 @@ The application follows a simple banking workflow: a user creates an account and
    spring.datasource.password=your_password
    ```
 
-4. Run the application:
+### Run the application:
+1. Run command in terminal:
    ```bash
-   ./mvnw spring-boot:run
+  ./mvnw spring-boot:run
    ```
 
-5. Open the app in a browser:
+2. Open the application in a browser:
    ```text
    http://localhost:8080
    ```
