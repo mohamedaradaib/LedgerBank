@@ -21,6 +21,9 @@ A bank application built with Java, Spring Boot, and MySQL to simulate core fina
 - Maven
 - Bootstrap
 
+## How It Works
+The application follows a simple banking workflow: a user creates an account and logs in with secure credentials, the system validates the session and grants access to the dashboard, and the user can then view balances, deposit funds, withdraw money, or transfer funds between accounts. Every action is recorded as a transaction in the database, and the dashboard presents the current balances and recent activity so the user has a clear view of their financial status. This is implemented using Spring Boot for the backend, Spring Security for authentication, JPA for database access, and Thymeleaf for the web interface.
+
 ## Getting Started
 ### Prerequisites
 - Java 17+
@@ -63,4 +66,4 @@ A bank application built with Java, Spring Boot, and MySQL to simulate core fina
 ## Live Demo
 
 ## License
-Distributed under the MIT License.
+MIT License.
