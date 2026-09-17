@@ -63,4 +63,4 @@ The application follows a simple banking workflow: a user creates an account and
 ## Live Demo
 
 ## License
-MIT License.
+[LICENSE](./LICENSE)
