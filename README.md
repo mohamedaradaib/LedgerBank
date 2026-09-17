@@ -1,6 +1,6 @@
 # Bank Application
 
-A bank application built with Java, Spring Boot, and MySQL that simulates account management, deposits, withdrawals, transfers, and transaction tracking.
+A bank application built with Java, Spring Boot, and MySQL that simulates financial operations such as account management, deposits, withdrawals, transfers, and transaction tracking.
 
 ## Features
 - User registration and login
