@@ -55,7 +55,7 @@ The application follows a simple banking workflow: a user creates an account and
    ./mvnw spring-boot:run
    ```
 
-2. Open the application in a browser:
+2. Open the Springboot localhost URL:
    ```
    http://localhost:8080
    ```
