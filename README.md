@@ -12,7 +12,7 @@ A bank application built with Java, Spring Boot, and MySQL that simulates real w
 - Password reset workflow
 
 ## Tech Stack
-- Java 17
+- Java 25
 - Spring Boot 3
 - Spring Security
 - Spring Data JPA
@@ -26,7 +26,7 @@ The application follows a simple banking workflow: a user creates an account and
 
 ## Getting Started
 ### Prerequisites
-- Java 17+
+- Java 25+
 - Maven
 - MySQL
 
