@@ -178,13 +178,12 @@ public class AccountService implements UserDetailsService {
             account.setSavingsBalance(BigDecimal.ZERO);
             needsSave = true;
         } else {
-            BigDecimal legacyBalance = account.getBalance() == null ? BigDecimal.ZERO : account.getBalance();
             if (account.getCheckingBalance() == null) {
-                account.setCheckingBalance(legacyBalance.subtract(account.getSavingsBalance()).max(BigDecimal.ZERO));
+                account.setCheckingBalance(BigDecimal.ZERO);
                 needsSave = true;
             }
             if (account.getSavingsBalance() == null) {
-                account.setSavingsBalance(legacyBalance.subtract(account.getCheckingBalance()).max(BigDecimal.ZERO));
+                account.setSavingsBalance(BigDecimal.ZERO);
                 needsSave = true;
             }
         }
