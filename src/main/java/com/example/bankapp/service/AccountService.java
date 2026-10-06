@@ -170,17 +170,32 @@ public class AccountService implements UserDetailsService {
     }
 
     private void initializeBalances(Account account) {
+        boolean needsSave = false;
+
         if (account.getCheckingBalance() == null && account.getSavingsBalance() == null) {
-            account.setCheckingBalance(account.getBalance() == null ? BigDecimal.ZERO : account.getBalance());
+            BigDecimal legacyBalance = account.getBalance() == null ? BigDecimal.ZERO : account.getBalance();
+            account.setCheckingBalance(legacyBalance);
             account.setSavingsBalance(BigDecimal.ZERO);
-            saveWithTotal(account);
-            return;
+            needsSave = true;
+        } else {
+            if (account.getCheckingBalance() == null) {
+                account.setCheckingBalance(BigDecimal.ZERO);
+                needsSave = true;
+            }
+            if (account.getSavingsBalance() == null) {
+                account.setSavingsBalance(BigDecimal.ZERO);
+                needsSave = true;
+            }
         }
-        if (account.getCheckingBalance() == null) {
-            account.setCheckingBalance(BigDecimal.ZERO);
+
+        BigDecimal total = account.getCheckingBalance().add(account.getSavingsBalance());
+        if (account.getBalance() == null || account.getBalance().compareTo(total) != 0) {
+            account.setBalance(total);
+            needsSave = true;
         }
-        if (account.getSavingsBalance() == null) {
-            account.setSavingsBalance(BigDecimal.ZERO);
+
+        if (needsSave) {
+            accountRepository.save(account);
         }
     }
 
