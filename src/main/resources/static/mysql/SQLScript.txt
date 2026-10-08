@@ -1,1 +1,23 @@
-CREATE DATABASE bankdb;
+CREATE DATABASE IF NOT EXISTS bankdb;
+USE bankdb;
+
+CREATE TABLE IF NOT EXISTS account (
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	account_type VARCHAR(255),
+	balance DECIMAL(38, 2),
+	checking_balance DECIMAL(38, 2),
+	password VARCHAR(255) NOT NULL,
+	savings_balance DECIMAL(38, 2),
+	username VARCHAR(255) NOT NULL UNIQUE,
+	version BIGINT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS bank_transaction (
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	amount DECIMAL(38, 2),
+	timestamp DATETIME(6),
+	type VARCHAR(255),
+	account_id BIGINT,
+	CONSTRAINT fk_bank_transaction_account
+		FOREIGN KEY (account_id) REFERENCES account (id)
+);
