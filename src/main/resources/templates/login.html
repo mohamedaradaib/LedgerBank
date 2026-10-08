@@ -146,7 +146,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-custom">
-    <a class="navbar-brand" href="#">Bank</a>
+    <a class="navbar-brand" href="#">LedgerBank</a>
     <div class="ml-auto social-icons">
         <a href="">Contact</a>
     </div>
@@ -157,7 +157,7 @@
     <div class="container">
         <h2 class="text-center" aria-label="Login">
             <i class="fas fa-university" aria-hidden="true" title="Login"></i>
-            <span>LedgerBank</span>
+            <span>Login</span>
         </h2>
         <form method="post" th:action="@{/login}">
             <div class="form-group">
@@ -170,14 +170,10 @@
             </div>
             <button type="submit" class="btn btn-block">Login</button>
         </form>
-        <p class="text-center mt-3"><a href="/credentials" class="custom-link">Forgot Password?</a></p>
         <p class="text-center mt-3"><a href="/register" class="custom-link">Register a New Account</a></p>
 
         <div th:if="${param.error}" class="alert alert-danger mt-3 text-center">
             Invalid username or password.
-        </div>
-        <div th:if="${param.reset}" class="alert alert-success mt-3 text-center">
-            Password reset successfully. You can now log in.
         </div>
     </div>
 </div>
