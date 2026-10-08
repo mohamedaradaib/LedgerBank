@@ -126,14 +126,14 @@ public class BankController {
     }
 
     @PostMapping("/credentials")
-    public String resetPassword(@RequestParam String username, @RequestParam String password,
-                                @RequestParam String confirmPassword, Model model) {
+    public String changePassword(@RequestParam String currentPassword, @RequestParam String password,
+                                 @RequestParam String confirmPassword, Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
-            accountService.resetPassword(username, password, confirmPassword);
-            return "redirect:/login?reset";
+            accountService.changePassword(username, currentPassword, password, confirmPassword);
+            return "redirect:/dashboard";
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("username", username);
             return "credentials";
         }
     }

@@ -14,11 +14,15 @@ public class Account implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
     private BigDecimal balance;
     private BigDecimal checkingBalance = BigDecimal.ZERO;
     private BigDecimal savingsBalance = BigDecimal.ZERO;
+    @Version
+    private Long version;
     @Enumerated(EnumType.STRING)
     private AccountType accountType = AccountType.CHECKING;
 

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -40,8 +41,14 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account registerAccount(String username, String password) {
+        if (username == null || username.isBlank()) {
+            throw new IllegalArgumentException("Username is required");
+        }
+        if (password == null || password.length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters");
+        }
         if (accountRepository.findByUsername(username).isPresent()) {
-            throw new RuntimeException("Username already exists");
+            throw new IllegalArgumentException("Username already exists");
         }
 
         Account account = new Account();
@@ -54,24 +61,30 @@ public class AccountService implements UserDetailsService {
         return accountRepository.save(account);
     }
 
-    public void resetPassword(String username, String password, String confirmPassword) {
+    public void changePassword(String username, String currentPassword, String password,
+                               String confirmPassword) {
         if (password == null || password.length() < 8) {
-            throw new RuntimeException("Password must be at least 8 characters");
+            throw new IllegalArgumentException("Password must be at least 8 characters");
         }
         if (!password.equals(confirmPassword)) {
-            throw new RuntimeException("Passwords do not match");
+            throw new IllegalArgumentException("Passwords do not match");
         }
 
         Account account = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+        if (currentPassword == null || !passwordEncoder.matches(currentPassword, account.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
         account.setPassword(passwordEncoder.encode(password));
         accountRepository.save(account);
     }
 
+    @Transactional
     public void deposit(Account account, BigDecimal amount) {
         deposit(account, AccountType.CHECKING, amount);
     }
 
+    @Transactional
     public void deposit(Account account, AccountType accountType, BigDecimal amount) {
         validateAmount(amount);
         initializeBalances(account);
@@ -81,10 +94,12 @@ public class AccountService implements UserDetailsService {
                 "Deposit to " + accountType.getDisplayName(), LocalDateTime.now(), account));
     }
 
+    @Transactional
     public void withdraw(Account account, BigDecimal amount) {
         withdraw(account, AccountType.CHECKING, amount);
     }
 
+    @Transactional
     public void withdraw(Account account, AccountType accountType, BigDecimal amount) {
         validateAmount(amount);
         initializeBalances(account);
@@ -113,10 +128,12 @@ public class AccountService implements UserDetailsService {
         return Arrays.asList(new SimpleGrantedAuthority("USER"));
     }
 
+    @Transactional
     public void transferAmount(Account fromAccount, String toUsername, BigDecimal amount) {
         transferAmount(fromAccount, AccountType.CHECKING, toUsername, AccountType.CHECKING, amount);
     }
 
+    @Transactional
     public void transferAmount(Account fromAccount, AccountType fromType, String toUsername,
                                AccountType toType, BigDecimal amount) {
         validateAmount(amount);
@@ -144,6 +161,7 @@ public class AccountService implements UserDetailsService {
                 LocalDateTime.now(), toAccount));
     }
 
+    @Transactional
     public void transferBetween(Account account, AccountType fromType, AccountType toType,
                                 BigDecimal amount) {
         validateAmount(amount);
