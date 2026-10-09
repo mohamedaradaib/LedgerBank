@@ -1,4 +1,4 @@
-# Bank
+# LedgerBank
 
 A bank application built with Java, Spring Boot, and MySQL that simulates real world financial operations such as account management, deposits, withdrawals, transfers, and transaction tracking.
 
@@ -9,7 +9,7 @@ A bank application built with Java, Spring Boot, and MySQL that simulates real w
 - Deposit and withdrawal operations
 - Transfers between account types and between users
 - Transaction history viewing
-- Password reset workflow
+- Authenticated password changes
 
 ## Tech Stack
 - Java 25
@@ -37,23 +37,21 @@ The application follows a simple banking workflow: a user creates an account and
    cd Bank
    ```
 
-2. Create the database:
+2. By default, the app uses an in-memory H2 database for local development. To use local MySQL, create the database and tables:
    ```sql
-   CREATE DATABASE database;
+   CREATE DATABASE bankdb;
    ```
+   Then, from the project root, run `mysql -u root -p bankdb < src/main/resources/static/mysql/SQLScript.txt`.
 
-3. Update database credentials in `src/main/resources/application.properties` if needed:
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/database
-   spring.datasource.username=root
-   spring.datasource.password=your_password
-   ```
+3. Set `DB_USERNAME` and `DB_PASSWORD` in your environment. Optionally set `DB_URL` if MySQL is not at `localhost:3306/bankdb`.
 
 ### Run the application:
 1. Run command in terminal:
    ```
    ./mvnw spring-boot:run
    ```
+
+   To run with MySQL, activate the `mysql` profile: `SPRING_PROFILES_ACTIVE=mysql ./mvnw spring-boot:run`.
 
 2. Open the Springboot localhost URL:
    ```
