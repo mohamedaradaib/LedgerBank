@@ -33,8 +33,8 @@ The application follows a simple banking workflow: a user creates an account and
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/mohamedaradaib/Bank.git
-   cd Bank
+   git clone https://github.com/mohamedaradaib/LedgerBank.git
+   cd LedgerBank
    ```
 
 2. By default, the app uses an in-memory H2 database for local development. To use local MySQL, create the database and tables:
