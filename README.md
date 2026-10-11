@@ -60,5 +60,7 @@ The application follows a simple banking workflow: a user creates an account and
 
 ## Live Demo
 
+## Screenshots
+
 ## License
 [LICENSE](./LICENSE)
