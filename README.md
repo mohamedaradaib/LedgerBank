@@ -53,7 +53,7 @@ The application follows a simple banking workflow: a user creates an account and
 
    To run with MySQL, activate the `mysql` profile: `SPRING_PROFILES_ACTIVE=mysql ./mvnw spring-boot:run`.
 
-2. Open the Springboot localhost URL:
+2. Then open the Springboot localhost URL:
    ```
    http://localhost:8080
    ```
