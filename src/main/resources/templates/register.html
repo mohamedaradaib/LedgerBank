@@ -1,163 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Registration</title>
+    <title>LedgerBank | Create account</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background:
-                radial-gradient(rgba(5, 12, 24, 0.58), rgba(5, 12, 24, 0.58)),
-                url('/images/wallpaper.jpg') center center / cover fixed no-repeat;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .navbar-custom {
-            background-color: rgba(0, 0, 0, 0.7);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-
-        .navbar-custom a {
-            color: #ffffff !important;
-        }
-
-        .navbar-custom .navbar-brand {
-            font-weight: bold;
-        }
-
-        .navbar-custom .social-icons a {
-            color: #ffffff;
-            margin-left: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .navbar-custom .social-icons a:hover,
-        .navbar-custom .social-icons a:focus {
-            color: #ffffff;
-            text-decoration: none;
-        }
-
-        .container {
-            max-width: 450px;
-            padding: 30px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            position: relative;
-            text-align: center;
-        }
-
-        .container h2 {
-            color: #ffffff;
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            color: #dddddd;
-            text-align: left;
-            display: block;
-        }
-
-        .form-group input {
-            border: 1px solid #f8f9fa;
-            background-color: #333;
-            color: #ffffff;
-        }
-
-        .form-control:focus {
-            color: #ffffff;
-            background-color: #ffffff00;
-            border-color: #80bdff;
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-
-        .btn {
-            background-color: #ffffff;
-            border: none;
-            color: black;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn:hover {
-            background-color: #ffffff;
-        }
-
-        .custom-link {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .custom-link:hover {
-            color: #ffffff;
-            text-decoration: underline;
-        }
-
-        .footer {
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 15px 0;
-            font-size: 14px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/ledgerbank.css}">
 </head>
-<body>
+<body class="auth-page">
 <nav class="navbar navbar-expand-lg navbar-custom">
     <a class="navbar-brand" href="/login">LedgerBank</a>
-    <div class="ml-auto social-icons">
-        <a href="">Contact</a>
-    </div>
+    <a class="nav-link contact-link" href="" target="_blank" rel="noopener noreferrer">Contact</a>
 </nav>
 
-<div class="container">
-    <h2 class="text-center">New Account</h2>
-    <form method="post" th:action="@{/register}">
-        <div class="form-group">
-            <label>Username</label>
-            <input type="text" class="form-control" name="username" required />
-        </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" class="form-control" name="password" minlength="8" autocomplete="new-password" required />
-        </div>
-        <button type="submit" class="btn btn-block">Register</button>
-    </form>
-    <p class="text-center mt-3">Current User? <a href="/login" class="custom-link">Login</a></p>
-
-    <div th:if="${error}" class="alert alert-danger mt-3 text-center">
-        User already present.
-    </div>
-</div>
-
-<!-- Footer -->
-<footer class="footer">
-    <p><a href="#" class="custom-link">&copy; 2026 LedgerBank, Inc. | </a><a href="#" class="custom-link">About</a> | <a href="#" class="custom-link">Terms of Service</a> | <a href="#" class="custom-link" target="_blank">Privacy Policy</a> | <a href="#" class="custom-link">Security</a> | <a href="#" class="custom-link">Disclosure</a></p>
+<main class="auth-layout">
+    <section class="auth-card" aria-labelledby="register-title">
+        <div class="eyebrow">Get started</div>
+        <h2 id="register-title">Create your account</h2>
+        <form method="post" th:action="@{/register}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="username" type="text" class="form-control" name="username" autocomplete="username" required />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password" class="form-control" name="password" minlength="8" autocomplete="new-password" required />
+            </div>
+            <button type="submit" class="btn btn-block">Create account</button>
+        </form>
+        <p class="auth-note">Already have an account? <a href="/login">Sign in</a></p>
+        <div th:if="${error}" class="alert alert-danger mt-3" role="alert" th:text="${error}"></div>
+    </section>
+</main>
+<footer class="app-footer">
+    <p><a href="#">&copy; 2026 LedgerBank, Inc. | </a><a href="#">About</a> | <a href="#">Terms of Service</a> | <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a> | <a href="#">Security</a> | <a href="#">Disclosure</a></p>
 </footer>
 
 </body>

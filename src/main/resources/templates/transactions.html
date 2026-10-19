@@ -1,106 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Transactions</title>
+    <title>LedgerBank | Transactions</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background:
-                radial-gradient(rgba(5, 12, 24, 0.58), rgba(5, 12, 24, 0.58)),
-                url('/images/wallpaper.jpg') center center / cover fixed no-repeat;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .navbar-custom {
-            background-color: rgba(0, 0, 0, 0.7);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-
-        .navbar-custom a {
-            color: #ffffff !important;
-        }
-
-        .navbar-custom button.nav-link {
-            color: #ffffff;
-            border: 0;
-            background: transparent;
-        }
-
-        .navbar-custom .navbar-brand {
-            font-weight: bold;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin-top: 80px; /* Reduced margin for the table to be closer to the top */
-            text-align: center;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-        }
-
-        .table-custom {
-            background-color: rgba(0, 0, 0, 0.8); /* Darker background for better contrast */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            overflow-x: auto; /* Ensures table is responsive */
-        }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #80bdff66; /* Slightly lighter row color */
-        }
-
-        .table-striped td, .table-striped th {
-            color: #ffffff; /* White text color for visibility */
-            font-weight: bold; /* Bolder text for readability */
-            padding: 15px; /* Increase padding for better spacing */
-            border-bottom: 1px solid #80bdff; /* Blue border for rows */
-        }
-
-        .table-striped th {
-            background-color: rgba(128, 189, 255, 0.2); /* Light blue background for headers */
-        }
-
-        .text-success {
-            color: #28a745 !important;
-        }
-
-        .text-danger {
-            color: #dc3545 !important;
-        }
-
-        .custom-link {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .custom-link:hover {
-            color: #ffffff;
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/ledgerbank.css}">
 </head>
-<body>
+<body class="history-page">
 <nav class="navbar navbar-expand-lg navbar-custom">
     <a class="navbar-brand" href="/dashboard">LedgerBank</a>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link" href="/transactions">Transactions</a></li>
         <li class="nav-item"><a class="nav-link" href="/credentials">Change Password</a></li>
+        <li class="nav-item"><a class="nav-link" href="" target="_blank" rel="noopener noreferrer">Contact</a></li>
         <li class="nav-item">
             <form method="post" th:action="@{/logout}" class="form-inline">
                 <button type="submit" class="nav-link">Logout</button>
@@ -109,34 +23,75 @@
     </ul>
 </nav>
 
-<div class="container">
-    <h2 class="text-center">Transactions</h2>
-    <div class="table-responsive table-custom">
-        <table class="table table-striped">
+<main class="history-main">
+    <header class="history-heading">
+        <div>
+            <div class="eyebrow">Your account activity</div>
+            <h1>Transactions</h1>
+        </div>
+        <p th:text="${#lists.size(transactions) == 1 ? '1 transaction' : #lists.size(transactions) + ' transactions'}">Transactions</p>
+    </header>
+    <form class="transaction-filters" method="get" th:action="@{/transactions}">
+        <div class="filter-field filter-search">
+            <label for="transaction-search">Search activity</label>
+            <input id="transaction-search" class="form-control" type="search" name="q"
+                   th:value="${searchTerm}" placeholder="Description or account type">
+        </div>
+        <div class="filter-field">
+            <label for="transaction-type">Transaction type</label>
+            <select id="transaction-type" class="form-control" name="type">
+                <option value="ALL" th:selected="${selectedType == 'ALL'}">All activity</option>
+                <option value="DEPOSIT" th:selected="${selectedType == 'DEPOSIT'}">Deposits</option>
+                <option value="WITHDRAWAL" th:selected="${selectedType == 'WITHDRAWAL'}">Withdrawals</option>
+                <option value="TRANSFER" th:selected="${selectedType == 'TRANSFER'}">Transfers</option>
+            </select>
+        </div>
+        <div class="filter-field">
+            <label for="transaction-from">From date</label>
+            <input id="transaction-from" class="form-control" type="date" name="fromDate" th:value="${fromDate}">
+        </div>
+        <div class="filter-field">
+            <label for="transaction-to">To date</label>
+            <input id="transaction-to" class="form-control" type="date" name="toDate" th:value="${toDate}">
+        </div>
+        <div class="filter-actions">
+            <button class="btn btn-primary" type="submit">Apply filters</button>
+            <a href="/transactions">Clear filters</a>
+        </div>
+    </form>
+    <p th:if="${error}" th:text="${error}" class="filter-error" role="alert"></p>
+    <div class="table-responsive history-table-wrap">
+        <table class="table history-table">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Date</th>
+                <th scope="col">Reference</th>
+                <th scope="col">Description</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="transaction : ${transactions}">
+            <tr th:if="${#lists.isEmpty(transactions) and searchTerm == '' and selectedType == 'ALL' and fromDate == '' and toDate == ''}">
+                <td class="history-empty" colspan="4">No transactions yet. Make a deposit to get started.</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(transactions) and (searchTerm != '' or selectedType != 'ALL' or fromDate != '' or toDate != '')}">
+                <td class="history-empty" colspan="4">No transactions match these filters.</td>
+            </tr>
+            <tr th:each="transaction : ${transactions}" th:with="isCredit=${transaction.type.startsWith('Deposit') or transaction.type.contains('Transfer In')}">
                 <td th:text="${transaction.id}"></td>
                 <td th:text="${transaction.type}"></td>
-                <td th:text="${transaction.amount}"
-                    th:classappend="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'} ? 'text-success' : 'text-danger'">
-                    <span th:text="${transaction.type.contains('Transfer In') || transaction.type == 'Deposit'} ? '+$' + transaction.amount : '-$' + transaction.amount"></span>
-                </td>
+                <td th:classappend="${isCredit ? 'amount-credit' : 'amount-debit'}"
+                    th:text="${(isCredit ? '+$' : '-$') + #numbers.formatDecimal(transaction.amount, 1, 'COMMA', 2, 'POINT')}"></td>
                 <td th:text="${transaction.timestamp}"></td>
             </tr>
             </tbody>
         </table>
     </div>
 
-<!--    <p class="text-center"><a href="/dashboard" class="custom-link">Dashboard</a></p>-->
-</div>
-
+    <p class="mt-3"><a href="/dashboard" class="font-weight-bold">&larr; Back to dashboard</a></p>
+</main>
+<footer class="app-footer">
+    <p><a href="#">&copy; 2026 LedgerBank, Inc. | </a><a href="#">About</a> | <a href="#">Terms of Service</a> | <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a> | <a href="#">Security</a> | <a href="#">Disclosure</a></p>
+</footer>
 </body>
 </html>

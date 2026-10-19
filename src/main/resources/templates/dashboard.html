@@ -1,138 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Dashboard</title>
+    <title>LedgerBank | Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background:
-                radial-gradient(rgba(5, 12, 24, 0.58), rgba(5, 12, 24, 0.58)),
-                url('/images/wallpaper.jpg') center center / cover fixed no-repeat;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .navbar-custom {
-            background-color: rgba(0, 0, 0, 0.7);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-
-        .navbar-custom a {
-            color: #ffffff !important;
-        }
-
-        .navbar-custom button.nav-link {
-            color: #ffffff;
-            border: 0;
-            background: transparent;
-        }
-
-        .navbar-custom .navbar-brand {
-            font-weight: bold;
-        }
-
-        .dashboard-container {
-            max-width: 1000px;
-            margin-top: 50px;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        h2, h3 {
-            margin-bottom: 20px;
-        }
-
-        .btn-primary {
-            background-color: #000000;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background-color: #80bdff;
-            color: #000;
-        }
-
-        .btn-success {
-            background-color: #000000;
-            border: none;
-        }
-
-        .btn-success:hover {
-            background-color: #000000;
-        }
-
-        .form-container {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .account-details {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .error {
-            color: #ff4c4c;
-        }
-
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
-
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .footer {
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 15px 0;
-            font-size: 14px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .footer a {
-            color: #80bdff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .footer a:hover {
-            color: #ffecb3;
-            text-decoration: underline;
-        }
-
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-custom">
@@ -141,6 +14,7 @@
         <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link" href="/transactions">Transactions</a></li>
         <li class="nav-item"><a class="nav-link" href="/credentials">Change Password</a></li>
+        <li class="nav-item"><a class="nav-link" href="" target="_blank" rel="noopener noreferrer">Contact</a></li>
         <li class="nav-item">
             <form method="post" th:action="@{/logout}" class="form-inline">
                 <button type="submit" class="nav-link">Logout</button>
@@ -149,146 +23,131 @@
     </ul>
 </nav>
 
-<div class="container dashboard-container">
-    <div class="text-center">
-        <h2 th:text="'Welcome, ' + ${account.username}"></h2>
-        <h3 th:text="'Total Balance: $' + ${account.balance}"></h3>
-    </div>
-
-    <!-- Account Details Section -->
-    <div class="account-details">
-        <h4>Account Details</h4>
-        <p><strong>Checking:</strong> $<span th:text="${checkingBalance}"></span></p>
-        <p><strong>Savings:</strong> $<span th:text="${savingsBalance}"></span></p>
-    </div>
-
-    <div class="row justify-content-center">
-        <!-- Deposit Section -->
-        <div class="col-md-3">
-            <button class="btn btn-block btn-primary" type="button" data-toggle="collapse" data-target="#depositForm" aria-expanded="false" aria-controls="depositForm">
-                Deposit
-            </button>
-            <div class="collapse mt-3" id="depositForm">
-                <form method="post" th:action="@{/deposit}" class="form-container">
-                    <div class="form-group">
-                        <label>Account</label>
-                        <select class="form-control" name="accountType">
-                            <option value="CHECKING">Checking</option>
-                            <option value="SAVINGS">Savings</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount</label>
-                        <input type="number" step="0.01" min="0.01" class="form-control" name="amount" required />
-                    </div>
-                    <button type="submit" class="btn btn-block btn-success">Submit</button>
-                </form>
-            </div>
+<main class="dashboard-container">
+    <header class="welcome-row">
+        <div>
+            <div class="eyebrow">Personal banking</div>
+            <h1>Welcome back, <span th:text="${account.username}"></span></h1>
         </div>
-
-        <!-- Withdraw Section -->
-        <div class="col-md-3">
-            <button class="btn btn-block btn-primary" type="button" data-toggle="collapse" data-target="#withdrawForm" aria-expanded="false" aria-controls="withdrawForm">
-                Withdraw
-            </button>
-            <div class="collapse mt-3" id="withdrawForm">
-                <form method="post" th:action="@{/withdraw}" class="form-container">
-                    <div class="form-group">
-                        <label>Account</label>
-                        <select class="form-control" name="accountType">
-                            <option value="CHECKING">Checking</option>
-                            <option value="SAVINGS">Savings</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount</label>
-                        <input type="number" step="0.01" min="0.01" class="form-control" name="amount" required />
-                    </div>
-                    <button type="submit" class="btn btn-block btn-success">Submit</button>
-                </form>
-            </div>
+        <div class="total-balance">
+            <small>Total balance</small>
+            <strong>$<span th:text="${account.balance}"></span></strong>
         </div>
+    </header>
 
-        <!-- Transfer Section -->
-        <div class="col-md-6" id="recipientTransferPanel">
-            <button class="btn btn-block btn-primary" type="button" data-toggle="collapse" data-target="#transferForm" aria-expanded="false" aria-controls="transferForm">
-                Recipient Transfer
-            </button>
-            <div class="collapse mt-3" id="transferForm">
-                <form method="post" th:action="@{/transfer}" class="form-container">
-                    <div class="form-group">
-                        <label>From Account</label>
-                        <select class="form-control" name="fromType">
-                            <option value="CHECKING">Checking</option>
-                            <option value="SAVINGS">Savings</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>To Account</label>
-                        <select class="form-control" name="toType">
-                            <option value="CHECKING">Checking</option>
-                            <option value="SAVINGS">Savings</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Recipient's Username</label>
-                        <input type="text" class="form-control" name="toUsername" required />
-                    </div>
-                    <div class="form-group">
-                        <label>Amount</label>
-                        <input type="number" step="0.01" min="0.01" class="form-control" name="amount" required />
-                    </div>
-                    <button type="submit" class="btn btn-block btn-success">Submit</button>
-                </form>
-            </div>
+    <section class="account-details" aria-label="Account balances">
+        <div class="balance-card">
+            <span>Checking account</span>
+            <strong>$<span th:text="${checkingBalance}"></span></strong>
         </div>
-    </div>
-
-    <div class="row justify-content-center mt-3" id="internalTransferRow">
-        <div class="col-md-3" id="internalTransferPanel">
-            <button class="btn btn-block btn-primary" type="button" data-toggle="collapse" data-target="#internalTransferForm">
-                Transfer
-            </button>
-            <div class="collapse mt-3" id="internalTransferForm">
-                <form method="post" th:action="@{/transfer-between}" class="form-container">
-                    <div class="form-group">
-                        <label>From</label>
-                        <select class="form-control" name="fromType">
-                            <option value="CHECKING">Checking</option>
-                            <option value="SAVINGS">Savings</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>To</label>
-                        <select class="form-control" name="toType">
-                            <option value="SAVINGS">Savings</option>
-                            <option value="CHECKING">Checking</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount</label>
-                        <input type="number" step="0.01" min="0.01" class="form-control" name="amount" required />
-                    </div>
-                    <button type="submit" class="btn btn-block btn-success">Transfer</button>
-                </form>
-            </div>
+        <div class="balance-card">
+            <span>Savings account</span>
+            <strong>$<span th:text="${savingsBalance}"></span></strong>
         </div>
-    </div>
+    </section>
 
-    <p th:if="${error != null}" th:text="${error}" class="error text-center mt-3"></p>
-</div>
+    <section aria-labelledby="actions-title">
+        <div class="actions-heading">
+            <h2 id="actions-title">Move your money</h2>
+            <a href="/transactions">View transaction history &rarr;</a>
+        </div>
+        <div class="action-grid">
+            <form method="post" th:action="@{/deposit}" class="form-container">
+                <h3>Deposit</h3>
+                <p>Add funds to one of your accounts.</p>
+                <div class="form-group">
+                    <label for="deposit-account">Deposit into</label>
+                    <select id="deposit-account" class="form-control" name="accountType">
+                        <option value="CHECKING">Checking</option>
+                        <option value="SAVINGS">Savings</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="deposit-amount">Amount</label>
+                    <input id="deposit-amount" type="number" step="0.01" min="0.01" class="form-control" name="amount" placeholder="0.00" required />
+                </div>
+                <button type="submit" class="btn btn-block btn-ledger-action">Add funds</button>
+            </form>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    const transferRow = document.querySelector('.row.justify-content-center');
-    const recipientPanel = document.getElementById('recipientTransferPanel');
-    const internalRow = document.getElementById('internalTransferRow');
-    const internalPanel = document.getElementById('internalTransferPanel');
+            <form method="post" th:action="@{/withdraw}" class="form-container">
+                <h3>Withdraw</h3>
+                <p>Take money out of an account.</p>
+                <div class="form-group">
+                    <label for="withdraw-account">Withdraw from</label>
+                    <select id="withdraw-account" class="form-control" name="accountType">
+                        <option value="CHECKING">Checking</option>
+                        <option value="SAVINGS">Savings</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="withdraw-amount">Amount</label>
+                    <input id="withdraw-amount" type="number" step="0.01" min="0.01" class="form-control" name="amount" placeholder="0.00" required />
+                </div>
+                <button type="submit" class="btn btn-block btn-ledger-action">Withdraw funds</button>
+            </form>
 
-    transferRow.insertBefore(internalPanel, recipientPanel);
-    internalRow.appendChild(recipientPanel);
-</script>
+            <form method="post" th:action="@{/transfer-between}" class="form-container">
+                <h3>Between your accounts</h3>
+                <p>Move money between checking and savings.</p>
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="internal-from">From</label>
+                        <select id="internal-from" class="form-control" name="fromType">
+                            <option value="CHECKING">Checking</option>
+                            <option value="SAVINGS">Savings</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="internal-to">To</label>
+                        <select id="internal-to" class="form-control" name="toType">
+                            <option value="SAVINGS">Savings</option>
+                            <option value="CHECKING">Checking</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="internal-amount">Amount</label>
+                    <input id="internal-amount" type="number" step="0.01" min="0.01" class="form-control" name="amount" placeholder="0.00" required />
+                </div>
+                <button type="submit" class="btn btn-block btn-ledger-action">Transfer funds</button>
+            </form>
+
+            <form method="post" th:action="@{/transfer}" class="form-container">
+                <h3>Send to someone</h3>
+                <p>Transfer funds to another LedgerBank member.</p>
+                <div class="form-group">
+                    <label for="recipient-username">Recipient username</label>
+                    <input id="recipient-username" type="text" class="form-control" name="toUsername" autocomplete="off" required />
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="recipient-from">From</label>
+                        <select id="recipient-from" class="form-control" name="fromType">
+                            <option value="CHECKING">Checking</option>
+                            <option value="SAVINGS">Savings</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="recipient-to">To</label>
+                        <select id="recipient-to" class="form-control" name="toType">
+                            <option value="CHECKING">Checking</option>
+                            <option value="SAVINGS">Savings</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-amount">Amount</label>
+                    <input id="recipient-amount" type="number" step="0.01" min="0.01" class="form-control" name="amount" placeholder="0.00" required />
+                </div>
+                <button type="submit" class="btn btn-block btn-ledger-action">Send transfer</button>
+            </form>
+        </div>
+    </section>
+
+    <p th:if="${error != null}" th:text="${error}" class="error text-center mt-4" role="alert"></p>
+</main>
+<footer class="app-footer">
+    <p><a href="#">&copy; 2026 LedgerBank, Inc. | </a><a href="#">About</a> | <a href="#">Terms of Service</a> | <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a> | <a href="#">Security</a> | <a href="#">Disclosure</a></p>
+</footer>
 </body>
 </html>

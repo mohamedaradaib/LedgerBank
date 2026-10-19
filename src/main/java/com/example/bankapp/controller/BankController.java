@@ -2,8 +2,10 @@ package com.example.bankapp.controller;
 
 import com.example.bankapp.model.Account;
 import com.example.bankapp.model.AccountType;
+import com.example.bankapp.model.Transaction;
 import com.example.bankapp.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 @Controller
 public class BankController {
@@ -47,16 +54,22 @@ public class BankController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
         return "login";
     }
 
     @PostMapping("/deposit")
     public String deposit(@RequestParam BigDecimal amount,
-                          @RequestParam(defaultValue = "CHECKING") AccountType accountType) {
+                          @RequestParam(defaultValue = "CHECKING") AccountType accountType, Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountService.findAccountByUsername(username);
-        accountService.deposit(account, accountType, amount);
+        try {
+            accountService.deposit(account, accountType, amount);
+        } catch (RuntimeException e) {
+            addDashboardAttributes(model, account);
+            model.addAttribute("error", e.getMessage());
+            return "dashboard";
+        }
         return "redirect:/dashboard";
     }
 
@@ -69,8 +82,8 @@ public class BankController {
         try {
             accountService.withdraw(account, accountType, amount);
         } catch (RuntimeException e) {
+            addDashboardAttributes(model, account);
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("account", account);
             return "dashboard";
         }
 
@@ -78,10 +91,36 @@ public class BankController {
     }
 
     @GetMapping("/transactions")
-    public String transactionHistory(Model model) {
+    public String transactionHistory(@RequestParam(required = false) String q,
+                                     @RequestParam(defaultValue = "ALL") String type,
+                                     @RequestParam(required = false)
+                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                     @RequestParam(required = false)
+                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+                                     Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountService.findAccountByUsername(username);
-        model.addAttribute("transactions", accountService.getTransactionHistory(account));
+        String transactionType = type == null ? "ALL" : type.toUpperCase(Locale.ROOT);
+        if (!Set.of("ALL", "DEPOSIT", "WITHDRAWAL", "TRANSFER").contains(transactionType)) {
+            transactionType = "ALL";
+        }
+        String searchTerm = q == null || q.isBlank() ? null : q.trim();
+        boolean invalidDateRange = fromDate != null && toDate != null && fromDate.isAfter(toDate);
+        LocalDateTime fromDateTime = fromDate == null ? null : fromDate.atStartOfDay();
+        LocalDateTime toDateExclusive = toDate == null ? null : toDate.plusDays(1).atStartOfDay();
+
+        List<Transaction> transactions = invalidDateRange
+                ? List.of()
+                : accountService.searchTransactionHistory(account, searchTerm, transactionType,
+                        fromDateTime, toDateExclusive);
+        model.addAttribute("transactions", transactions);
+        model.addAttribute("searchTerm", q == null ? "" : q);
+        model.addAttribute("selectedType", transactionType);
+        model.addAttribute("fromDate", fromDate == null ? "" : fromDate.toString());
+        model.addAttribute("toDate", toDate == null ? "" : toDate.toString());
+        if (invalidDateRange) {
+            model.addAttribute("error", "Start date must be on or before end date.");
+        }
         return "transactions";
     }
 
@@ -95,8 +134,8 @@ public class BankController {
         try {
             accountService.transferAmount(fromAccount, fromType, toUsername, toType, amount);
         } catch (RuntimeException e) {
+            addDashboardAttributes(model, fromAccount);
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("account", fromAccount);
             return "dashboard";
         }
 
@@ -111,10 +150,8 @@ public class BankController {
         try {
             accountService.transferBetween(account, fromType, toType, amount);
         } catch (RuntimeException e) {
+            addDashboardAttributes(model, account);
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("account", account);
-            model.addAttribute("checkingBalance", accountService.getBalanceForType(account, AccountType.CHECKING));
-            model.addAttribute("savingsBalance", accountService.getBalanceForType(account, AccountType.SAVINGS));
             return "dashboard";
         }
         return "redirect:/dashboard";
@@ -136,6 +173,12 @@ public class BankController {
             model.addAttribute("error", e.getMessage());
             return "credentials";
         }
+    }
+
+    private void addDashboardAttributes(Model model, Account account) {
+        model.addAttribute("account", account);
+        model.addAttribute("checkingBalance", accountService.getBalanceForType(account, AccountType.CHECKING));
+        model.addAttribute("savingsBalance", accountService.getBalanceForType(account, AccountType.SAVINGS));
     }
 
 }

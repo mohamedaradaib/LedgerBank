@@ -9,11 +9,12 @@ A bank application built with Java, Spring Boot, and MySQL that simulates real w
 - Deposit and withdrawal operations
 - Transfers between account types and between users
 - Transaction history viewing
+- Transaction search and filtering by description, type, and date range
 - Authenticated password changes
 
 ## Tech Stack
-- Java 25
-- Spring Boot 3
+- Java
+- Spring Boot
 - Spring Security
 - Spring Data JPA
 - Thymeleaf
@@ -22,13 +23,11 @@ A bank application built with Java, Spring Boot, and MySQL that simulates real w
 - Bootstrap
 
 ## How It Works
-The application follows a simple banking workflow: a user creates an account and logs in with secure credentials, the system validates the session and grants access to the dashboard, and the user can then view balances, deposit funds, withdraw money, or transfer funds between accounts. Every action is recorded as a transaction in the database, and the dashboard presents the current balances and recent activity so the user has a clear view of their financial status. This is implemented using Spring Boot for the backend, Spring Security for authentication, JPA for database access, and Thymeleaf for the web interface.
+The application follows a simple banking workflow: a user creates an account and logs in with secure credentials, the system validates the session and grants access to the dashboard, and the user can then view balances, deposit funds, withdraw money, or transfer funds between accounts. Every action is recorded as a transaction in the database. The dashboard presents total, checking, and savings balances alongside forms for banking operations; transaction history is available on a separate page. This is implemented using Spring Boot for the backend, Spring Security for authentication, JPA for database access, and Thymeleaf for the web interface.
 
 ## Getting Started
 ### Prerequisites
-- Java 25+
-- Maven
-- MySQL
+- MySQL only if using the optional MySQL profile
 
 ### Installation
 1. Clone the repository:
@@ -71,6 +70,5 @@ The application follows a simple banking workflow: a user creates an account and
 ![alt text](image-3.png)
 
 ![alt text](image-4.png)
-
 ## License
 [LICENSE](./LICENSE)

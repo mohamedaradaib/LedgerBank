@@ -117,6 +117,12 @@ public class AccountService implements UserDetailsService {
         return transactionRepository.findByAccountId(account.getId());
     }
 
+    public List<Transaction> searchTransactionHistory(Account account, String searchTerm, String transactionType,
+                                                       LocalDateTime fromDate, LocalDateTime toDateExclusive) {
+        return transactionRepository.findFilteredByAccountId(account.getId(), searchTerm, transactionType,
+                fromDate, toDateExclusive);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = findAccountByUsername(username);
