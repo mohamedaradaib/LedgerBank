@@ -15,12 +15,10 @@ A bank application built with Java, Spring Boot, and MySQL that simulates real w
 ## Tech Stack
 - Java
 - Spring Boot
-- Spring Security
-- Spring Data JPA
 - Thymeleaf
 - MySQL
-- Maven
 - Bootstrap
+- Maven
 
 ## How It Works
 The application follows a simple banking workflow: a user creates an account and logs in with secure credentials, the system validates the session and grants access to the dashboard, and the user can then view balances, deposit funds, withdraw money, or transfer funds between accounts. Every action is recorded as a transaction in the database. The dashboard presents total, checking, and savings balances alongside forms for banking operations; transaction history is available on a separate page. This is implemented using Spring Boot for the backend, Spring Security for authentication, JPA for database access, and Thymeleaf for the web interface.
@@ -70,5 +68,6 @@ The application follows a simple banking workflow: a user creates an account and
 ![alt text](image-3.png)
 
 ![alt text](image-4.png)
+
 ## License
-[LICENSE](./LICENSE)
+Distributed under the MIT License. See [LICENSE](./LICENSE) for more information
